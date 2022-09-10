@@ -10,9 +10,13 @@ import { validateFields } from '../middleware/validations';
 const hospitalsRoutes = Router();
 
 
-hospitalsRoutes.get('/', getHospitals);
+hospitalsRoutes.get('/',validateJWT, getHospitals);
 
-hospitalsRoutes.post('/', createHospitals);
+hospitalsRoutes.post('/', [
+    validateJWT,
+    check('name', 'Campo requerido').not().isEmpty(),
+    validateFields
+], createHospitals);
 
 
 hospitalsRoutes.put('/:id', updateHospitals);

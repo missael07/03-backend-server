@@ -12,7 +12,12 @@ const doctorsRoutes = Router();
 
 doctorsRoutes.get('/', getDoctors);
 
-doctorsRoutes.post('/', createDoctor);
+doctorsRoutes.post('/',[
+    validateJWT,
+    check('name', 'Campo requerido').not().isEmpty(),
+    check('hospital', 'Id invalido').isMongoId(),
+    validateFields
+], createDoctor);
 
 
 doctorsRoutes.put('/:id', updateDoctor);

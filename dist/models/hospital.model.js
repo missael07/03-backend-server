@@ -23,7 +23,8 @@ const HospitalSchema = new mongoose_1.Schema({
     },
     createdBy: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     }
 });
 HospitalSchema.method('toJSON', function () {

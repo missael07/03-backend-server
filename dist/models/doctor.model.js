@@ -23,11 +23,13 @@ const DoctorSchema = new mongoose_1.Schema({
     },
     createdBy: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     },
     hospital: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: 'Hospital'
+        ref: 'Hospital',
+        required: true
     }
 });
 DoctorSchema.method('toJSON', function () {

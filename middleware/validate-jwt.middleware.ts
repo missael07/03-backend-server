@@ -13,6 +13,7 @@ export const validateJWT = (req: any, res: Response, next: NextFunction) => {
                     reject(err);
                     next();
                 }
+                req.uid = decoded.uid;
                 resolve(decoded);
                 next();
             })
