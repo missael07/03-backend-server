@@ -4,12 +4,19 @@ import { genSaltSync, hashSync } from "bcryptjs";
 import { genJWT } from "../helpers/jwt";
 
 export const getUsers = async (req: any, resp: Response) => {
-    const _isActive = req.params.IsActive;
-    const users = await User.find({isActive: _isActive}, 'name email role google isActive');
+    const from = Number(req.query.from) || 0;
+
+    const [users, total] = await Promise.all([
+        User.find({}, 'name email role google isActive')
+            .skip(from).limit(5),
+        User.count()
+    ]);
+
+
     resp.json({
         ok: true,
         users,
-        uid: req.uid,
+        total,
     })
 }
 

@@ -25,12 +25,16 @@ const user_model_1 = require("../models/user.model");
 const bcryptjs_1 = require("bcryptjs");
 const jwt_1 = require("../helpers/jwt");
 const getUsers = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    const _isActive = req.params.IsActive;
-    const users = yield user_model_1.User.find({ isActive: _isActive }, 'name email role google isActive');
+    const from = Number(req.query.from) || 0;
+    const [users, total] = yield Promise.all([
+        user_model_1.User.find({}, 'name email role google isActive')
+            .skip(from).limit(5),
+        user_model_1.User.count()
+    ]);
     resp.json({
         ok: true,
         users,
-        uid: req.uid,
+        total,
     });
 });
 exports.getUsers = getUsers;

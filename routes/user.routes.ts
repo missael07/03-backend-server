@@ -10,7 +10,7 @@ import { validateFields } from '../middleware/validations';
 const userRoutes = Router();
 
 
-userRoutes.get('/:IsActive',validateJWT, getUsers);
+userRoutes.get('/',validateJWT, getUsers);
 
 userRoutes.post('/', [
     check('name','Campo requerido').not().isEmpty(),
