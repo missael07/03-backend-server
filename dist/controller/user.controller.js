@@ -27,9 +27,9 @@ const jwt_1 = require("../helpers/jwt");
 const getUsers = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     const from = Number(req.query.from) || 0;
     const [users, total] = yield Promise.all([
-        user_model_1.User.find({}, 'name email role google isActive')
+        user_model_1.User.find({}, 'name email role google isActive img')
             .skip(from).limit(5),
-        user_model_1.User.count()
+        user_model_1.User.countDocuments()
     ]);
     resp.json({
         ok: true,

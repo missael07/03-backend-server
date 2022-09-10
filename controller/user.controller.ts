@@ -7,9 +7,9 @@ export const getUsers = async (req: any, resp: Response) => {
     const from = Number(req.query.from) || 0;
 
     const [users, total] = await Promise.all([
-        User.find({}, 'name email role google isActive')
+        User.find({}, 'name email role google isActive img')
             .skip(from).limit(5),
-        User.count()
+        User.countDocuments()
     ]);
 
 

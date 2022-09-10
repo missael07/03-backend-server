@@ -1,5 +1,8 @@
 import { Response } from "express"
+import { existsSync } from "fs";
+import path from "path";
 import { v4 as uuidv4 } from 'uuid';
+import { updateImg } from "../helpers/updateImg";
 import { Doctor } from "../models/doctor.model";
 import { Hospital } from "../models/hospital.model";
 import { User } from "../models/user.model";
@@ -30,8 +33,18 @@ export const fileUploadServer = async (req: any, resp: Response) => {
 
     file.mv(path, (err: any) => {
         if (err) resp.status(500).json({ ok: false, msg: 'Error al cargar la imagen' });
-
+        updateImg(by, id, fileName);
+        file.mv(`./dist/uploads/${by}/${fileName}`);
         resp.status(200).json({ ok: true, msg: 'Archivo Cargado Correctamente' });
     });
+}
 
+export const getImage = (req: any, resp: Response) => {
+    const { data, by } = req.params;
+    const pathImg = path.join(__dirname, `../uploads/${by}/${data}`);
+
+    if(!existsSync(pathImg)) return resp.sendFile(path.join(__dirname, `../uploads/no-img.jpg`))
+
+    resp.sendFile(pathImg);
+    
 }

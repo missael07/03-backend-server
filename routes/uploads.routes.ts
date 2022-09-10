@@ -4,7 +4,7 @@
 import { Router } from "express";
 import fileUpload from "express-fileupload";
 import { validateJWT } from "../middleware/validate-jwt.middleware";
-import { fileUploadServer } from '../controller/upload.contraller';
+import { fileUploadServer, getImage } from '../controller/upload.contraller';
 
 
 const uploadRoutes = Router();
@@ -14,7 +14,7 @@ uploadRoutes.use(fileUpload());
 
 uploadRoutes.put('/:by/:id', validateJWT, fileUploadServer);
 
-// uploadRoutes.get('/searchBy/:by/:data',validateJWT, searchBy)
+uploadRoutes.get('/:by/:data',validateJWT, getImage)
 
 
 

@@ -14,5 +14,5 @@ const uploadRoutes = express_1.Router();
 // default options
 uploadRoutes.use(express_fileupload_1.default());
 uploadRoutes.put('/:by/:id', validate_jwt_middleware_1.validateJWT, upload_contraller_1.fileUploadServer);
-// uploadRoutes.get('/searchBy/:by/:data',validateJWT, searchBy)
+uploadRoutes.get('/:by/:data', validate_jwt_middleware_1.validateJWT, upload_contraller_1.getImage);
 exports.default = uploadRoutes;

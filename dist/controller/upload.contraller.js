@@ -8,9 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fileUploadServer = void 0;
+exports.getImage = exports.fileUploadServer = void 0;
+const fs_1 = require("fs");
+const path_1 = __importDefault(require("path"));
 const uuid_1 = require("uuid");
+const updateImg_1 = require("../helpers/updateImg");
 const fileUploadServer = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, by } = req.params;
     const validTypes = ['users', 'hospitals', 'doctors'];
@@ -35,7 +41,17 @@ const fileUploadServer = (req, resp) => __awaiter(void 0, void 0, void 0, functi
     file.mv(path, (err) => {
         if (err)
             resp.status(500).json({ ok: false, msg: 'Error al cargar la imagen' });
+        updateImg_1.updateImg(by, id, fileName);
+        file.mv(`./dist/uploads/${by}/${fileName}`);
         resp.status(200).json({ ok: true, msg: 'Archivo Cargado Correctamente' });
     });
 });
 exports.fileUploadServer = fileUploadServer;
+const getImage = (req, resp) => {
+    const { data, by } = req.params;
+    const pathImg = path_1.default.join(__dirname, `../uploads/${by}/${data}`);
+    if (!fs_1.existsSync(pathImg))
+        return resp.sendFile(path_1.default.join(__dirname, `../uploads/no-img.jpg`));
+    resp.sendFile(pathImg);
+};
+exports.getImage = getImage;
