@@ -10,6 +10,7 @@ const auth_routes_1 = __importDefault(require("../routes/auth.routes"));
 const hospitals_routes_1 = __importDefault(require("../routes/hospitals.routes"));
 const doctors_routes_1 = __importDefault(require("../routes/doctors.routes"));
 const searchs_routes_1 = __importDefault(require("../routes/searchs.routes"));
+const uploads_routes_1 = __importDefault(require("../routes/uploads.routes"));
 class Server {
     constructor() {
         this.app = express_1.default();
@@ -29,6 +30,7 @@ class Server {
         this.app.use('/api/hospitals', hospitals_routes_1.default);
         this.app.use('/api/doctors', doctors_routes_1.default);
         this.app.use('/api/search', searchs_routes_1.default);
+        this.app.use('/api/upload', uploads_routes_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {

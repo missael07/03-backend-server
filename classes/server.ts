@@ -6,6 +6,7 @@ import authRoutes from "../routes/auth.routes";
 import hospitalsRoutes from "../routes/hospitals.routes";
 import doctorsRoutes from "../routes/doctors.routes";
 import searchRoutes from '../routes/searchs.routes';
+import uploadRoutes from "../routes/uploads.routes";
 export default class Server{
     // Language: typescript
     public app: express.Application;
@@ -20,15 +21,16 @@ export default class Server{
 
     routes(): void{
         //cors
-    this.app.use(cors({ origin: true, credentials: true }));
-    this.app.use(express.json());
-
-    //declare routes
-    this.app.use('/api/users', userRoutes);
-    this.app.use('/api/login', authRoutes);
-    this.app.use('/api/hospitals', hospitalsRoutes);
-    this.app.use('/api/doctors', doctorsRoutes);
-    this.app.use('/api/search', searchRoutes);
+        this.app.use(cors({ origin: true, credentials: true }));
+        this.app.use(express.json());
+        //declare routes
+        this.app.use('/api/users', userRoutes);
+        this.app.use('/api/login', authRoutes);
+        this.app.use('/api/hospitals', hospitalsRoutes);
+        this.app.use('/api/doctors', doctorsRoutes);
+        this.app.use('/api/search', searchRoutes);
+        this.app.use('/api/upload', uploadRoutes);
+        
     }
 
 

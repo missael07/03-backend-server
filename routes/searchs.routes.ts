@@ -11,7 +11,7 @@ const searchRoutes = Router();
 
 searchRoutes.get('/:data', validateJWT, search);
 
-searchRoutes.get('/searchBy/:by/:data', searchBy)
+searchRoutes.get('/searchBy/:by/:data', validateJWT, searchBy)
 
 
 
