@@ -59,7 +59,7 @@ export const updateUser = async (req: any, resp: Response) => {
         const uid = req.params.id;
         const userDB = await User.findById(uid);
 
-        if (!userDB) return resp.status(404).json({ ok: false, msg: 'Usuario inexistente' });
+        if (!userDB) return resp.status(404).json({ ok: false, msg: 'Usuario no encotrado' });
 
         const {password, google, email, ...fields} = req.body;
         const emailExists = await User.findOne({ email });
@@ -79,7 +79,7 @@ export const updateUser = async (req: any, resp: Response) => {
     } catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error Inesperado'
+            msg: 'Error Inesperado Contacte al administrador'
         })
     }
 }
@@ -97,7 +97,7 @@ export const deleteUser = async (req: any, resp: Response) => {
     } catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error Inesperado'
+            msg: 'Error Inesperado Contacte al administrador'
         })
     }
 }

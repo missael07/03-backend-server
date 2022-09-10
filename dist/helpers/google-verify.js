@@ -20,10 +20,8 @@ function googleVerify(token) {
             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         });
         const payload = ticket.getPayload();
-        console.log(payload);
-        // If request specified a G Suite domain:
-        // const domain = payload['hd'];
-        return payload;
+        const { email, name, picture } = payload;
+        return { email, name, picture };
     });
 }
 exports.default = googleVerify;

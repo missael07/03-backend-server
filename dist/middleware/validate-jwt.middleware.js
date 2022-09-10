@@ -17,6 +17,7 @@ const validateJWT = (req, res, next) => {
                     next();
                 }
                 req.uid = decoded.uid;
+                req.email = decoded.email;
                 resolve(decoded);
                 next();
             });

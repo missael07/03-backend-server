@@ -3,7 +3,8 @@
 */
 import { Router } from "express";
 import { check } from "express-validator";
-import { login, loginGoogle } from '../controller/auth.controller';
+import { login, loginGoogle, renewToken } from '../controller/auth.controller';
+import { validateJWT } from "../middleware/validate-jwt.middleware";
 import { validateFields } from '../middleware/validations';
 
 const authRoutes = Router();
@@ -18,8 +19,9 @@ authRoutes.post('/', [
 
 authRoutes.post('/google', [
     check('token', 'Token google obligatorio').not().isEmpty(),
-    validateFields,
-    
+    validateFields,    
 ], loginGoogle);
+
+authRoutes.get('/renew', validateJWT, renewToken);
 
 export default authRoutes;

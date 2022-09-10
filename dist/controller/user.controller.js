@@ -71,7 +71,7 @@ const updateUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
         const uid = req.params.id;
         const userDB = yield user_model_1.User.findById(uid);
         if (!userDB)
-            return resp.status(404).json({ ok: false, msg: 'Usuario inexistente' });
+            return resp.status(404).json({ ok: false, msg: 'Usuario no encotrado' });
         const _a = req.body, { password, google, email } = _a, fields = __rest(_a, ["password", "google", "email"]);
         const emailExists = yield user_model_1.User.findOne({ email });
         if (userDB.email !== email && emailExists)
@@ -89,7 +89,7 @@ const updateUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
     catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error Inesperado'
+            msg: 'Error Inesperado Contacte al administrador'
         });
     }
 });
@@ -105,7 +105,7 @@ const deleteUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
     catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error Inesperado'
+            msg: 'Error Inesperado Contacte al administrador'
         });
     }
 });

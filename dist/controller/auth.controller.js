@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginGoogle = exports.login = void 0;
+exports.renewToken = exports.loginGoogle = exports.login = void 0;
 const bcryptjs_1 = require("bcryptjs");
 const user_model_1 = require("../models/user.model");
 const jwt_1 = require("../helpers/jwt");
@@ -78,3 +78,20 @@ const loginGoogle = (req, resp) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.loginGoogle = loginGoogle;
+const renewToken = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    const { uid, email } = req;
+    try {
+        const token = yield jwt_1.genJWT(uid, email);
+        resp.status(200).json({
+            ok: true,
+            token
+        });
+    }
+    catch (error) {
+        resp.status(500).json({
+            ok: true,
+            msg: 'Contacte al administrador'
+        });
+    }
+});
+exports.renewToken = renewToken;

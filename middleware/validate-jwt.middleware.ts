@@ -14,6 +14,7 @@ export const validateJWT = (req: any, res: Response, next: NextFunction) => {
                     next();
                 }
                 req.uid = decoded.uid;
+                req.email = decoded.email;
                 resolve(decoded);
                 next();
             })

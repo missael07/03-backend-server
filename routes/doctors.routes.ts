@@ -10,7 +10,7 @@ import { validateFields } from '../middleware/validations';
 const doctorsRoutes = Router();
 
 
-doctorsRoutes.get('/', getDoctors);
+doctorsRoutes.get('/', validateJWT, getDoctors);
 
 doctorsRoutes.post('/',[
     validateJWT,
@@ -20,9 +20,16 @@ doctorsRoutes.post('/',[
 ], createDoctor);
 
 
-doctorsRoutes.put('/:id', updateDoctor);
+doctorsRoutes.put('/:id',[
+    validateJWT,
+    check('name', 'Campo requerido').not().isEmpty(),
+    check('hospital', 'Id invalido').isMongoId(),
+    validateFields
+], updateDoctor);
 
-doctorsRoutes.delete('/:id', deleteDoctor);
+doctorsRoutes.delete('/:id',[
+    validateJWT,
+], deleteDoctor);
 
 
 export default doctorsRoutes;

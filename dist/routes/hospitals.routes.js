@@ -15,6 +15,12 @@ hospitalsRoutes.post('/', [
     express_validator_1.check('name', 'Campo requerido').not().isEmpty(),
     validations_1.validateFields
 ], hospitals_controller_1.createHospitals);
-hospitalsRoutes.put('/:id', hospitals_controller_1.updateHospitals);
-hospitalsRoutes.delete('/:id', hospitals_controller_1.deleteHospitals);
+hospitalsRoutes.put('/:id', [
+    validate_jwt_middleware_1.validateJWT,
+    express_validator_1.check('name', 'Campo requerido').not().isEmpty(),
+    validations_1.validateFields
+], hospitals_controller_1.updateHospitals);
+hospitalsRoutes.delete('/:id', [
+    validate_jwt_middleware_1.validateJWT
+], hospitals_controller_1.deleteHospitals);
 exports.default = hospitalsRoutes;

@@ -73,3 +73,22 @@ export const loginGoogle = async (req: any, resp: Response) => {
         })
     }
 }
+
+
+export const renewToken = async (req: any, resp: Response) => {
+    const { uid, email } = req;
+    try {
+        
+        const token = await genJWT(uid,email);
+        resp.status(200).json({
+            ok: true,
+            token
+        })
+    } catch (error) {
+        
+        resp.status(500).json({
+            ok: true,
+            msg: 'Contacte al administrador'
+        })
+    }
+}

@@ -19,9 +19,15 @@ hospitalsRoutes.post('/', [
 ], createHospitals);
 
 
-hospitalsRoutes.put('/:id', updateHospitals);
+hospitalsRoutes.put('/:id',[
+    validateJWT,
+    check('name', 'Campo requerido').not().isEmpty(),
+    validateFields
+], updateHospitals);
 
-hospitalsRoutes.delete('/:id', deleteHospitals);
+hospitalsRoutes.delete('/:id',[
+    validateJWT
+], deleteHospitals);
 
 
 export default hospitalsRoutes;
