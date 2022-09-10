@@ -11,9 +11,9 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Hospital = void 0;
+exports.Doctor = void 0;
 const mongoose_1 = require("mongoose");
-const HospitalSchema = new mongoose_1.Schema({
+const DoctorSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: true,
@@ -24,10 +24,14 @@ const HospitalSchema = new mongoose_1.Schema({
     createdBy: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    hospital: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'Hospital'
     }
 });
-HospitalSchema.method('toJSON', function () {
+DoctorSchema.method('toJSON', function () {
     const _a = this.toObject(), { __v } = _a, object = __rest(_a, ["__v"]);
     return object;
 });
-exports.Hospital = mongoose_1.model('Hospital', HospitalSchema);
+exports.Doctor = mongoose_1.model('Doctor', DoctorSchema);

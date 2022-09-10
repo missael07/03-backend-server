@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const HospitalSchema = new Schema({
+const DoctorSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -11,12 +11,16 @@ const HospitalSchema = new Schema({
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'User'
+    },
+    hospital: {
+        type: Schema.Types.ObjectId,
+        ref: 'Hospital'
     }
 });
 
-HospitalSchema.method('toJSON', function () {
+DoctorSchema.method('toJSON', function () {
     const { __v,  ...object } = this.toObject();
     return object;
 })
 
-export const Hospital = model('Hospital', HospitalSchema);
+export const Doctor = model('Doctor', DoctorSchema);

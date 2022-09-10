@@ -11,6 +11,7 @@ const config_1 = require("./database/config");
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const hospitals_routes_1 = __importDefault(require("./routes/hospitals.routes"));
+const doctors_routes_1 = __importDefault(require("./routes/doctors.routes"));
 // Language: typescript
 dotenv_1.default.config();
 const server = new server_1.default();
@@ -21,6 +22,7 @@ server.app.use(express_1.default.json());
 server.app.use('/api/users', user_routes_1.default);
 server.app.use('/api/login', auth_routes_1.default);
 server.app.use('/api/hospitals', hospitals_routes_1.default);
+server.app.use('/api/doctors', doctors_routes_1.default);
 //connect to database
 config_1.dbConnection();
 //Start the server

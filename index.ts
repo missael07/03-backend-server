@@ -7,6 +7,7 @@ import { dbConnection } from "./database/config";
 import authRoutes from "./routes/auth.routes";
 import dotenv from "dotenv";
 import hospitalsRoutes from "./routes/hospitals.routes";
+import doctorsRoutes from "./routes/doctors.routes";
 
 // Language: typescript
 dotenv.config();
@@ -20,6 +21,8 @@ server.app.use(express.json());
 server.app.use('/api/users', userRoutes);
 server.app.use('/api/login', authRoutes);
 server.app.use('/api/hospitals', hospitalsRoutes);
+server.app.use('/api/doctors', doctorsRoutes);
+
 
 
 
