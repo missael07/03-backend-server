@@ -3,6 +3,7 @@ import { compareSync, genSaltSync, hashSync } from "bcryptjs";
 
 import { User } from '../models/user.model';
 import { genJWT } from "../helpers/jwt";
+import googleVerify from "../helpers/google-verify";
 
 export const login = async (req: any, resp: Response) => {
     try {
@@ -28,6 +29,47 @@ export const login = async (req: any, resp: Response) => {
         resp.status(500).json({
             ok: false,
             msg: 'Hable con el administrador'
+        })
+    }
+}
+
+export const loginGoogle = async (req: any, resp: Response) => {
+    try {
+        
+        const token = req.body.token
+        const { email, name, picture } = await googleVerify(token);
+        
+        const userDB = await User.findOne({ email });
+        let user;
+
+        if (!userDB) {
+            user = new User({
+                email,
+                name,
+                img: picture,
+                password: '@@@',
+                google: true
+            })
+        } else {
+            user = userDB;
+            user.google = true;
+            user.img = picture;
+        }
+        await user.save();
+
+        const tokenUser = await genJWT(user.id, user.email);
+
+
+        resp.status(200).json({
+            ok: true,
+            tokenUser
+        })
+    }
+    catch (error) {
+        console.log(error);
+        resp.status(400).json({
+            ok: false,
+            msg: 'Token google invalido'
         })
     }
 }

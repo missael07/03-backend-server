@@ -22,6 +22,7 @@ export default class Server{
     routes(): void{
         //cors
         this.app.use(cors({ origin: true, credentials: true }));
+        this.app.use(express.static('public'))
         this.app.use(express.json());
         //declare routes
         this.app.use('/api/users', userRoutes);
