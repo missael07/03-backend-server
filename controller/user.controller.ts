@@ -28,7 +28,7 @@ export const createUser = async (req: any, resp: Response) => {
             ok: false,
             msg: 'Ya existe un usuario con ese correo electronico'
         });
-
+        
         const user = new User(req.body);
 
         const salt = genSaltSync();

@@ -20,7 +20,8 @@ export const validateJWT = (req: any, res: Response, next: NextFunction) => {
             })
         });
     } catch (error) {
-        return res.status(401).json({ ok: false, msg: 'Token invalido' });
+        return res.status(401).json({ ok: false, msg: 'No se encontro Token' });
     }   
 }
+
 

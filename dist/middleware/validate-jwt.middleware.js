@@ -24,7 +24,7 @@ const validateJWT = (req, res, next) => {
         });
     }
     catch (error) {
-        return res.status(401).json({ ok: false, msg: 'Token invalido' });
+        return res.status(401).json({ ok: false, msg: 'No se encontro Token' });
     }
 };
 exports.validateJWT = validateJWT;

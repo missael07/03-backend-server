@@ -79,10 +79,12 @@ export const renewToken = async (req: any, resp: Response) => {
     const { uid, email } = req;
     try {
         
-        const token = await genJWT(uid,email);
+        const token = await genJWT(uid, email);
+        const userDB = await User.findById(uid)
         resp.status(200).json({
             ok: true,
-            token
+            token,
+            user: userDB
         })
     } catch (error) {
         
@@ -92,3 +94,4 @@ export const renewToken = async (req: any, resp: Response) => {
         })
     }
 }
+

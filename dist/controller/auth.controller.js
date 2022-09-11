@@ -82,9 +82,11 @@ const renewToken = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
     const { uid, email } = req;
     try {
         const token = yield jwt_1.genJWT(uid, email);
+        const userDB = yield user_model_1.User.findById(uid);
         resp.status(200).json({
             ok: true,
-            token
+            token,
+            user: userDB
         });
     }
     catch (error) {
