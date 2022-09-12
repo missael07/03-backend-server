@@ -69,7 +69,7 @@ export const loginGoogle = async (req: any, resp: Response) => {
         console.log(error);
         resp.status(400).json({
             ok: false,
-            msg: 'Token google invalido'
+            msg: 'Token'
         })
     }
 }

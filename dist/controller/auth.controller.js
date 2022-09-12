@@ -73,7 +73,7 @@ const loginGoogle = (req, resp) => __awaiter(void 0, void 0, void 0, function* (
         console.log(error);
         resp.status(400).json({
             ok: false,
-            msg: 'Token google invalido'
+            msg: 'Token'
         });
     }
 });

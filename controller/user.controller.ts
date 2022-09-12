@@ -86,11 +86,21 @@ export const updateUser = async (req: any, resp: Response) => {
             user: updatedUser
         })
 
-    } catch (error) {
-        resp.status(500).json({
-            ok: false,
-            msg: 'Admin'
-        })
+    } catch (error: any) {
+
+        if (error.error.name.msg.includes('requerido')) {
+            console.log('test')
+            resp.status(400).json({
+                ok: false,
+                msg: 'ValidationField'
+            });
+        } else {
+            resp.status(500).json({
+                ok: false,
+                msg: 'Admin'
+            });
+        }
+        
     }
 }
 
