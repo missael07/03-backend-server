@@ -9,7 +9,7 @@ const validateJWT = (req, res, next) => {
     try {
         const token = req.header('x-auth-token');
         if (!token)
-            return res.status(401).json({ ok: false, msg: 'Token invalido' });
+            return res.status(400).json({ ok: false, msg: 'Token' });
         return new Promise((resolve, reject) => {
             jsonwebtoken_1.default.verify(token, process.env.DB_JWT_SECRET, (err, decoded) => {
                 if (err) {
@@ -24,7 +24,7 @@ const validateJWT = (req, res, next) => {
         });
     }
     catch (error) {
-        return res.status(401).json({ ok: false, msg: 'No se encontro Token' });
+        return res.status(401).json({ ok: false, msg: 'Found' });
     }
 };
 exports.validateJWT = validateJWT;

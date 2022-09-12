@@ -40,9 +40,9 @@ export const searchBy = async (req: any, resp: Response) => {
             break;
     
         default:
-            return resp.json({
+            return resp.status(404).json({
                 ok: false,
-                msg: 'Tabla de busqueda invalida'
+                msg: 'Found'
             })
     }
 

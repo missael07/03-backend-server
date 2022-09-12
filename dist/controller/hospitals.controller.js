@@ -41,7 +41,7 @@ const createHospitals = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
     catch (err) {
-        res.status(500).json({ ok: false, msg: "Contacte al administrador" + err });
+        res.status(500).json({ ok: false, msg: "Admin" });
     }
 });
 exports.createHospitals = createHospitals;
@@ -50,7 +50,7 @@ const updateHospitals = (req, res) => __awaiter(void 0, void 0, void 0, function
         const uid = req.params.id;
         const hospitalBD = yield hospital_model_1.Hospital.findById(uid);
         if (!hospitalBD)
-            return res.status(404).json({ ok: false, msg: 'Hospital no encontrado' });
+            return res.status(404).json({ ok: false, msg: 'Found' });
         const fields = __rest(req.body, []);
         const updatedHospital = yield hospital_model_1.Hospital.findByIdAndUpdate(uid, fields, { new: true });
         res.json({
@@ -61,7 +61,7 @@ const updateHospitals = (req, res) => __awaiter(void 0, void 0, void 0, function
     catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Copntacte al administrador'
+            msg: 'Admin'
         });
     }
 });
@@ -71,16 +71,14 @@ const deleteHospitals = (req, res) => __awaiter(void 0, void 0, void 0, function
         const uid = req.params.id;
         const hospitalBD = yield hospital_model_1.Hospital.findById(uid);
         if (!hospitalBD)
-            return res.status(404).json({ ok: false, msg: 'Hospital no encontrado' });
+            return res.status(404).json({ ok: false, msg: 'Found' });
         yield hospital_model_1.Hospital.findByIdAndDelete(uid);
-        // if (!userDB) return resp.status(404).json({ ok: false, msg: 'Usuario inexistente' });
-        // const updatedUser = await User.findByIdAndUpdate(uid, {isActive: false}, {new: true});
-        res.json({ ok: true, msg: 'Hospital eliminado correctamente' });
+        res.json({ ok: true, msg: 'SuccessDeleted' });
     }
     catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Error Inesperado'
+            msg: 'Admin'
         });
     }
 });

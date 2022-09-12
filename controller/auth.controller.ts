@@ -10,11 +10,11 @@ export const login = async (req: any, resp: Response) => {
         const { email, password } = req.body;
         const userDB = await User.findOne({ email });
 
-        if (!userDB) return resp.status(404).json({ ok: false, msg: 'Correo o Contraseña no validos' });
+        if (!userDB) return resp.status(404).json({ ok: false, msg: 'Validation' });
 
         const validPassword = compareSync(password, userDB.password);
         
-        if(!validPassword) return resp.status(404).json({ ok: false, msg: 'Correo o Contraseña no validos' });
+        if(!validPassword) return resp.status(404).json({ ok: false, msg: 'Validation' });
 
         if (!userDB.isActive) return resp.status(404).json({ ok: false, msg: 'Cuenta desactivada' });
         
@@ -28,7 +28,7 @@ export const login = async (req: any, resp: Response) => {
     catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Hable con el administrador'
+            msg: 'Admin'
         })
     }
 }
@@ -90,7 +90,8 @@ export const renewToken = async (req: any, resp: Response) => {
         
         resp.status(500).json({
             ok: true,
-            msg: 'Contacte al administrador'
+            
+            msg: 'Admin'
         })
     }
 }

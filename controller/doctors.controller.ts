@@ -23,7 +23,7 @@ export const createDoctor = async (req: any, res: Response) => {
         doctor,
     });
     } catch (err) {
-        res.status(500).json({ok: false, msg: "Contacte al administrador" + err});
+        res.status(500).json({ok: false, msg: "Admin"});
     }
     
 }
@@ -33,12 +33,12 @@ export const updateDoctor = async (req: any, res: Response) => {
         const uid = req.params.id;
         const doctorDB = await Doctor.findById(uid);
 
-        if (!doctorDB) return res.status(404).json({ ok: false, msg: 'Doctor no encontrado' });
+        if (!doctorDB) return res.status(404).json({ ok: false, msg: 'Found' });
         
         const { ...fields } = req.body;
 
         const hospitalBD = await Hospital.findById(fields.hospital);
-        if (!hospitalBD) return res.status(404).json({ ok: false, msg: 'Hospital no encontrado' });
+        if (!hospitalBD) return res.status(404).json({ ok: false, msg: 'Found' });
 
         const updatedDoctor = await Doctor.findByIdAndUpdate(uid, fields, {new: true});
 
@@ -51,7 +51,7 @@ export const updateDoctor = async (req: any, res: Response) => {
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Contacte al administrador'
+            msg: 'Admin'
         })
     }
 }
@@ -60,15 +60,15 @@ export const deleteDoctor = async (req: any, res: Response) => {
     try {
         const uid = req.params.id;
         const doctorBD = await Doctor.findById(uid);
-        if (!doctorBD) return res.status(404).json({ ok: false, msg: 'Doctor no encontrado' });
+        if (!doctorBD) return res.status(404).json({ ok: false, msg: 'Found' });
 
         await Doctor.findByIdAndDelete(uid);
-        res.json({ ok: true, msg: 'Doctor eliminado correctamente'})
+        res.json({ ok: true, msg: 'SuccessDeleted'})
         
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Contacte al administrador'
+            msg: 'Admin'
         })
     }
 }

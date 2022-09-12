@@ -45,9 +45,9 @@ const searchBy = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
             results = yield doctor_model_1.Doctor.find({ name: regex }, 'name email img role').populate('createdBy', 'name').populate('hospital', 'name img');
             break;
         default:
-            return resp.json({
+            return resp.status(404).json({
                 ok: false,
-                msg: 'Tabla de busqueda invalida'
+                msg: 'Found'
             });
     }
     resp.json({

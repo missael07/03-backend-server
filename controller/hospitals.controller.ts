@@ -24,7 +24,7 @@ export const createHospitals = async (req: any, res: Response) => {
         });
     }
     catch (err) {
-        res.status(500).json({ok: false, msg: "Contacte al administrador" + err});
+        res.status(500).json({ok: false, msg: "Admin"});
     }
 }
 
@@ -33,7 +33,7 @@ export const updateHospitals = async (req: any, res: Response) => {
         const uid = req.params.id;
         const hospitalBD = await Hospital.findById(uid);
 
-        if (!hospitalBD) return res.status(404).json({ ok: false, msg: 'Hospital no encontrado' });
+        if (!hospitalBD) return res.status(404).json({ ok: false, msg: 'Found' });
         
         const { ...fields } = req.body;
         const updatedHospital = await Hospital.findByIdAndUpdate(uid, fields, {new: true});
@@ -46,7 +46,7 @@ export const updateHospitals = async (req: any, res: Response) => {
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Copntacte al administrador'
+            msg: 'Admin'
         })
     }
 }
@@ -55,19 +55,16 @@ export const deleteHospitals = async (req: any, res: Response) => {
     try {
         const uid = req.params.id;
         const hospitalBD = await Hospital.findById(uid);
-        if (!hospitalBD) return res.status(404).json({ ok: false, msg: 'Hospital no encontrado' });
+        if (!hospitalBD) return res.status(404).json({ ok: false, msg: 'Found' });
 
         await Hospital.findByIdAndDelete(uid);
 
-        // if (!userDB) return resp.status(404).json({ ok: false, msg: 'Usuario inexistente' });
-
-        // const updatedUser = await User.findByIdAndUpdate(uid, {isActive: false}, {new: true});
-        res.json({ ok: true, msg: 'Hospital eliminado correctamente'})
+        res.json({ ok: true, msg: 'SuccessDeleted'})
         
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Error Inesperado'
+            msg: 'Admin'
         })
     }
 }

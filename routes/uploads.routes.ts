@@ -14,7 +14,7 @@ uploadRoutes.use(fileUpload());
 
 uploadRoutes.put('/:by/:id', validateJWT, fileUploadServer);
 
-uploadRoutes.get('/:by/:data',validateJWT, getImage)
+uploadRoutes.get('/:by/:data', getImage)
 
 
 

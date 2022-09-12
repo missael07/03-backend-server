@@ -26,7 +26,7 @@ export const createUser = async (req: any, resp: Response) => {
         const emailExists = await User.findOne({ email });
         if (emailExists) return resp.status(400).json({
             ok: false,
-            msg: 'Ya existe un usuario con ese correo electronico'
+            msg: 'Exists'
         });
         
         const user = new User(req.body);
@@ -46,7 +46,7 @@ export const createUser = async (req: any, resp: Response) => {
     catch (err) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error inesperado....revisar logs'
+            msg: 'Admin'
         })
     }
 
@@ -59,16 +59,26 @@ export const updateUser = async (req: any, resp: Response) => {
         const uid = req.params.id;
         const userDB = await User.findById(uid);
 
-        if (!userDB) return resp.status(404).json({ ok: false, msg: 'Usuario no encotrado' });
+        if (!userDB) return resp.status(404).json({ ok: false, msg: 'Found' });
 
         const {password, google, email, ...fields} = req.body;
         const emailExists = await User.findOne({ email });
         if (userDB.email !== email && emailExists)  return resp.status(400).json({
             ok: false,
-            msg: 'Ya existe un usuario con ese correo electronico'
+            msg: 'Exists'
         });
 
-        fields.email = email;
+        if (!userDB.google) {            
+            fields.email = email;
+        } else if (userDB.email !== email) {
+            
+            return resp.status(400).json({
+                ok: false,
+                msg: 'google'
+            });
+        }
+
+        
         const updatedUser = await User.findByIdAndUpdate(uid, fields, {new: true});
 
         resp.json({
@@ -79,7 +89,7 @@ export const updateUser = async (req: any, resp: Response) => {
     } catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Contacte al administrador'
+            msg: 'Admin'
         })
     }
 }
@@ -87,17 +97,17 @@ export const updateUser = async (req: any, resp: Response) => {
 export const deleteUser = async (req: any, resp: Response) => { 
     try {
         const uid = req.params.id;
-        const userDB = await User.findByIdAndDelete(uid);
+        const userDB = await User.findById(uid);
 
-        // if (!userDB) return resp.status(404).json({ ok: false, msg: 'Usuario inexistente' });
-
-        // const updatedUser = await User.findByIdAndUpdate(uid, {isActive: false}, {new: true});
-        resp.json({ ok: true, msg: 'Usuario eliminado correctamente'})
+        if (!userDB) return resp.status(404).json({ ok: false, msg: 'Found' });
+        
+        await User.findByIdAndDelete(uid);
+        resp.json({ ok: true, msg: 'SuccessDeleted'})
         
     } catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Contacte al administrador'
+            msg: 'Admin'
         })
     }
 }

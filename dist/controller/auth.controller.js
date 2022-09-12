@@ -22,10 +22,10 @@ const login = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
         const { email, password } = req.body;
         const userDB = yield user_model_1.User.findOne({ email });
         if (!userDB)
-            return resp.status(404).json({ ok: false, msg: 'Correo o Contraseña no validos' });
+            return resp.status(404).json({ ok: false, msg: 'Validation' });
         const validPassword = bcryptjs_1.compareSync(password, userDB.password);
         if (!validPassword)
-            return resp.status(404).json({ ok: false, msg: 'Correo o Contraseña no validos' });
+            return resp.status(404).json({ ok: false, msg: 'Validation' });
         if (!userDB.isActive)
             return resp.status(404).json({ ok: false, msg: 'Cuenta desactivada' });
         const token = yield jwt_1.genJWT(userDB.id, userDB.email);
@@ -37,7 +37,7 @@ const login = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Hable con el administrador'
+            msg: 'Admin'
         });
     }
 });
@@ -92,7 +92,7 @@ const renewToken = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
     catch (error) {
         resp.status(500).json({
             ok: true,
-            msg: 'Contacte al administrador'
+            msg: 'Admin'
         });
     }
 });

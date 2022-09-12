@@ -28,22 +28,22 @@ const fileUploadServer = (req, resp) => __awaiter(void 0, void 0, void 0, functi
     }
     ;
     if (!req.files || Object.keys(req.files).length === 0) {
-        return resp.status(400).send({ ok: false, msg: 'No se cargó ningún archivo.' });
+        return resp.status(400).send({ ok: false, msg: 'Load' });
     }
     const file = req.files.img;
     const name = file.name.split('.');
     const ext = name[name.length - 1];
     const validExtensions = ['png', 'jpg', 'jpeg'];
     if (!validExtensions.includes(ext))
-        return resp.status(400).json({ ok: false, msg: 'No es una extension valida' });
+        return resp.status(400).json({ ok: false, msg: 'Extension' });
     const fileName = `${uuid_1.v4()}.${ext}`;
     const path = `./uploads/${by}/${fileName}`;
     file.mv(path, (err) => {
         if (err)
-            resp.status(500).json({ ok: false, msg: 'Error al cargar la imagen' });
+            resp.status(500).json({ ok: false, msg: 'LoadFile' });
         updateImg_1.updateImg(by, id, fileName);
         file.mv(`./dist/uploads/${by}/${fileName}`);
-        resp.status(200).json({ ok: true, msg: 'Archivo Cargado Correctamente' });
+        resp.status(200).json({ ok: true, msg: 'Success', fileName });
     });
 });
 exports.fileUploadServer = fileUploadServer;

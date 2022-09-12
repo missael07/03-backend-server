@@ -44,7 +44,7 @@ const createDoctor = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (err) {
-        res.status(500).json({ ok: false, msg: "Contacte al administrador" + err });
+        res.status(500).json({ ok: false, msg: "Admin" });
     }
 });
 exports.createDoctor = createDoctor;
@@ -53,11 +53,11 @@ const updateDoctor = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const uid = req.params.id;
         const doctorDB = yield doctor_model_1.Doctor.findById(uid);
         if (!doctorDB)
-            return res.status(404).json({ ok: false, msg: 'Doctor no encontrado' });
+            return res.status(404).json({ ok: false, msg: 'Found' });
         const fields = __rest(req.body, []);
         const hospitalBD = yield hospital_model_1.Hospital.findById(fields.hospital);
         if (!hospitalBD)
-            return res.status(404).json({ ok: false, msg: 'Hospital no encontrado' });
+            return res.status(404).json({ ok: false, msg: 'Found' });
         const updatedDoctor = yield doctor_model_1.Doctor.findByIdAndUpdate(uid, fields, { new: true });
         res.json({
             ok: true,
@@ -68,7 +68,7 @@ const updateDoctor = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Contacte al administrador'
+            msg: 'Admin'
         });
     }
 });
@@ -78,14 +78,14 @@ const deleteDoctor = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const uid = req.params.id;
         const doctorBD = yield doctor_model_1.Doctor.findById(uid);
         if (!doctorBD)
-            return res.status(404).json({ ok: false, msg: 'Doctor no encontrado' });
+            return res.status(404).json({ ok: false, msg: 'Found' });
         yield doctor_model_1.Doctor.findByIdAndDelete(uid);
-        res.json({ ok: true, msg: 'Doctor eliminado correctamente' });
+        res.json({ ok: true, msg: 'SuccessDeleted' });
     }
     catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Contacte al administrador'
+            msg: 'Admin'
         });
     }
 });

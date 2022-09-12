@@ -45,7 +45,7 @@ const createUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
         if (emailExists)
             return resp.status(400).json({
                 ok: false,
-                msg: 'Ya existe un usuario con ese correo electronico'
+                msg: 'Exists'
             });
         const user = new user_model_1.User(req.body);
         const salt = bcryptjs_1.genSaltSync();
@@ -61,7 +61,7 @@ const createUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
     catch (err) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error inesperado....revisar logs'
+            msg: 'Admin'
         });
     }
 });
@@ -71,15 +71,23 @@ const updateUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
         const uid = req.params.id;
         const userDB = yield user_model_1.User.findById(uid);
         if (!userDB)
-            return resp.status(404).json({ ok: false, msg: 'Usuario no encotrado' });
+            return resp.status(404).json({ ok: false, msg: 'Found' });
         const _a = req.body, { password, google, email } = _a, fields = __rest(_a, ["password", "google", "email"]);
         const emailExists = yield user_model_1.User.findOne({ email });
         if (userDB.email !== email && emailExists)
             return resp.status(400).json({
                 ok: false,
-                msg: 'Ya existe un usuario con ese correo electronico'
+                msg: 'Exists'
             });
-        fields.email = email;
+        if (!userDB.google) {
+            fields.email = email;
+        }
+        else if (userDB.email !== email) {
+            return resp.status(400).json({
+                ok: false,
+                msg: 'google'
+            });
+        }
         const updatedUser = yield user_model_1.User.findByIdAndUpdate(uid, fields, { new: true });
         resp.json({
             ok: true,
@@ -89,7 +97,7 @@ const updateUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
     catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Contacte al administrador'
+            msg: 'Admin'
         });
     }
 });
@@ -97,15 +105,16 @@ exports.updateUser = updateUser;
 const deleteUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const uid = req.params.id;
-        const userDB = yield user_model_1.User.findByIdAndDelete(uid);
-        // if (!userDB) return resp.status(404).json({ ok: false, msg: 'Usuario inexistente' });
-        // const updatedUser = await User.findByIdAndUpdate(uid, {isActive: false}, {new: true});
-        resp.json({ ok: true, msg: 'Usuario eliminado correctamente' });
+        const userDB = yield user_model_1.User.findById(uid);
+        if (!userDB)
+            return resp.status(404).json({ ok: false, msg: 'Found' });
+        yield user_model_1.User.findByIdAndDelete(uid);
+        resp.json({ ok: true, msg: 'SuccessDeleted' });
     }
     catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Error Inesperado Contacte al administrador'
+            msg: 'Admin'
         });
     }
 });
