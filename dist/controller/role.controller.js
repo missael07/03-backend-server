@@ -20,62 +20,25 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.createUser = exports.getUser = exports.impersonateUser = exports.getUsers = void 0;
+exports.deleteRole = exports.updateRole = exports.createRole = exports.getRoles = void 0;
 const user_model_1 = require("../models/user.model");
-const bcryptjs_1 = require("bcryptjs");
-const jwt_1 = require("../helpers/jwt");
-const getUsers = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    const from = Number(req.query.from) || 0;
-    const [users, total] = yield Promise.all([
-        user_model_1.User.find({}, 'name email role google isActive img')
-            .skip(from).limit(5),
-        user_model_1.User.countDocuments()
-    ]);
+const role_model_1 = require("../models/role.model");
+const getRoles = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    const roles = yield role_model_1.Role.find();
     resp.json({
         ok: true,
-        users,
-        total,
+        roles,
     });
 });
-exports.getUsers = getUsers;
-const impersonateUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, uid } = req.query;
-    const token = yield jwt_1.genJWT(uid, email);
-    const user = yield user_model_1.User.findById(uid);
-    resp.json({
-        ok: true,
-        token,
-        user,
-    });
-});
-exports.impersonateUser = impersonateUser;
-const getUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    const { uid } = req.query;
-    const user = yield user_model_1.User.findById(uid);
-    resp.json({
-        ok: true,
-        user,
-    });
-});
-exports.getUser = getUser;
-const createUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password, name } = req.body;
+exports.getRoles = getRoles;
+const createRole = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    const { nameRole } = req.body;
     try {
-        const emailExists = yield user_model_1.User.findOne({ email });
-        if (emailExists)
-            return resp.status(400).json({
-                ok: false,
-                msg: "Exists",
-            });
-        const user = new user_model_1.User(req.body);
-        const salt = bcryptjs_1.genSaltSync();
-        user.password = bcryptjs_1.hashSync(password, salt);
-        yield user.save();
-        const token = yield jwt_1.genJWT(user.id, user.email);
+        const role = new role_model_1.Role(req.body);
+        yield role.save();
         resp.json({
             ok: true,
-            user,
-            token,
+            role,
         });
     }
     catch (err) {
@@ -85,8 +48,8 @@ const createUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
 });
-exports.createUser = createUser;
-const updateUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+exports.createRole = createRole;
+const updateRole = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const uid = req.params.id;
         const userDB = yield user_model_1.User.findById(uid);
@@ -131,21 +94,21 @@ const updateUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-exports.updateUser = updateUser;
-const deleteUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+exports.updateRole = updateRole;
+const deleteRole = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const uid = req.params.id;
         const userDB = yield user_model_1.User.findById(uid);
         if (!userDB)
-            return resp.status(404).json({ ok: false, msg: 'Found' });
+            return resp.status(404).json({ ok: false, msg: "Found" });
         yield user_model_1.User.findByIdAndDelete(uid);
-        resp.json({ ok: true, msg: 'SuccessDeleted' });
+        resp.json({ ok: true, msg: "SuccessDeleted" });
     }
     catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Admin'
+            msg: "Admin",
         });
     }
 });
-exports.deleteUser = deleteUser;
+exports.deleteRole = deleteRole;

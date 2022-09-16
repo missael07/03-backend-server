@@ -8,6 +8,7 @@ import doctorsRoutes from "../routes/doctors.routes";
 import searchRoutes from '../routes/searchs.routes';
 import uploadRoutes from "../routes/uploads.routes";
 import bodyParser from "body-parser";
+import roleRoutes from "../routes/rol.routes";
 export default class Server{
     // Language: typescript
     public app: express.Application;
@@ -33,6 +34,7 @@ export default class Server{
         this.app.use('/api/doctors', doctorsRoutes);
         this.app.use('/api/search', searchRoutes);
         this.app.use('/api/upload', uploadRoutes);
+        this.app.use('/api/role', roleRoutes);
         
     }
 

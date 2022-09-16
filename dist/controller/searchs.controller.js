@@ -15,44 +15,46 @@ const hospital_model_1 = require("../models/hospital.model");
 const user_model_1 = require("../models/user.model");
 const search = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.params.data;
-    const regex = new RegExp(data, 'i');
+    const regex = new RegExp(data, "i");
     const [users, hospitals, doctors] = yield Promise.all([
-        user_model_1.User.find({ name: regex }, 'name email img role'),
-        hospital_model_1.Hospital.find({ name: regex }, 'name img '),
-        doctor_model_1.Doctor.find({ name: regex }, 'name img '),
+        user_model_1.User.find({ name: regex }, "name email img role google uid"),
+        hospital_model_1.Hospital.find({ name: regex }, "name img "),
+        doctor_model_1.Doctor.find({ name: regex }, "name img "),
     ]);
     resp.json({
         ok: true,
         users,
         hospitals,
-        doctors
+        doctors,
     });
 });
 exports.search = search;
 const searchBy = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.params.data;
     const collection = req.params.by;
-    const regex = new RegExp(data, 'i');
+    const regex = new RegExp(data, "i");
     let results = [];
     switch (collection) {
-        case 'users':
-            results = yield user_model_1.User.find({ name: regex }, 'name email img role');
+        case "users":
+            results = yield user_model_1.User.find({ name: regex }, "name email img role google uid");
             break;
-        case 'hospitals':
-            results = yield hospital_model_1.Hospital.find({ name: regex }, 'name img ').populate('createdBy', 'name');
+        case "hospitals":
+            results = yield hospital_model_1.Hospital.find({ name: regex }, "name img ").populate("createdBy", "name");
             break;
-        case 'doctors':
-            results = yield doctor_model_1.Doctor.find({ name: regex }, 'name email img role').populate('createdBy', 'name').populate('hospital', 'name img');
+        case "doctors":
+            results = yield doctor_model_1.Doctor.find({ name: regex }, "name email img role")
+                .populate("createdBy", "name")
+                .populate("hospital", "name img");
             break;
         default:
             return resp.status(404).json({
                 ok: false,
-                msg: 'Found'
+                msg: "Found",
             });
     }
     resp.json({
         ok: true,
-        results
+        results,
     });
 });
 exports.searchBy = searchBy;

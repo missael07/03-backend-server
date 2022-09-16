@@ -19,90 +19,104 @@ export const getUsers = async (req: any, resp: Response) => {
         total,
     })
 }
+export const impersonateUser = async (req: any, resp: Response) => {
+  const { email, uid } = req.query;
+  const token = await genJWT(uid, email);
+
+  const user = await User.findById(uid);
+  resp.json({
+    ok: true,
+    token,
+    user,
+  });
+};
+
+export const getUser = async (req: any, resp: Response) => {
+  const { uid } = req.query;
+  const user = await User.findById(uid);
+  resp.json({
+    ok: true,
+    user,
+  });
+};
 
 export const createUser = async (req: any, resp: Response) => {
-    const { email, password, name } = req.body;
-    try {
-        const emailExists = await User.findOne({ email });
-        if (emailExists) return resp.status(400).json({
-            ok: false,
-            msg: 'Exists'
-        });
-        
-        const user = new User(req.body);
+  const { email, password, name } = req.body;
+  try {
+    const emailExists = await User.findOne({ email });
+    if (emailExists)
+      return resp.status(400).json({
+        ok: false,
+        msg: "Exists",
+      });
 
-        const salt = genSaltSync();
-        user.password = hashSync(password, salt);
+    const user = new User(req.body);
 
-        await user.save()
+    const salt = genSaltSync();
+    user.password = hashSync(password, salt);
 
-        const token = await genJWT(user.id, user.email);
-        resp.json({
-            ok: true,
-            user,
-            token
-        })
-    }
-    catch (err) {
-        resp.status(500).json({
-            ok: false,
-            msg: 'Admin'
-        })
-    }
+    await user.save();
 
-
-}
+    const token = await genJWT(user.id, user.email);
+    resp.json({
+      ok: true,
+      user,
+      token,
+    });
+  } catch (err) {
+    resp.status(500).json({
+      ok: false,
+      msg: "Admin",
+    });
+  }
+};
 
 export const updateUser = async (req: any, resp: Response) => {
+  try {
+    const uid = req.params.id;
+    const userDB = await User.findById(uid);
 
-    try {
-        const uid = req.params.id;
-        const userDB = await User.findById(uid);
+    if (!userDB) return resp.status(404).json({ ok: false, msg: "Found" });
 
-        if (!userDB) return resp.status(404).json({ ok: false, msg: 'Found' });
+    const { password, google, email, ...fields } = req.body;
+    const emailExists = await User.findOne({ email });
+    if (userDB.email !== email && emailExists)
+      return resp.status(400).json({
+        ok: false,
+        msg: "Exists",
+      });
 
-        const {password, google, email, ...fields} = req.body;
-        const emailExists = await User.findOne({ email });
-        if (userDB.email !== email && emailExists)  return resp.status(400).json({
-            ok: false,
-            msg: 'Exists'
-        });
-
-        if (!userDB.google) {            
-            fields.email = email;
-        } else if (userDB.email !== email) {
-            
-            return resp.status(400).json({
-                ok: false,
-                msg: 'google'
-            });
-        }
-
-        
-        const updatedUser = await User.findByIdAndUpdate(uid, fields, {new: true});
-
-        resp.json({
-            ok: true,
-            user: updatedUser
-        })
-
-    } catch (error: any) {
-
-        if (error.error.name.msg.includes('requerido')) {
-            console.log('test')
-            resp.status(400).json({
-                ok: false,
-                msg: 'ValidationField'
-            });
-        } else {
-            resp.status(500).json({
-                ok: false,
-                msg: 'Admin'
-            });
-        }
-        
+    if (!userDB.google) {
+      fields.email = email;
+    } else if (userDB.email !== email) {
+      return resp.status(400).json({
+        ok: false,
+        msg: "google",
+      });
     }
-}
+
+    const updatedUser = await User.findByIdAndUpdate(uid, fields, {
+      new: true,
+    });
+
+    resp.json({
+      ok: true,
+      user: updatedUser,
+    });
+  } catch (error: any) {
+    if (error.error.name.msg.includes("requerido")) {
+      resp.status(400).json({
+        ok: false,
+        msg: "ValidationField",
+      });
+    } else {
+      resp.status(500).json({
+        ok: false,
+        msg: "Admin",
+      });
+    }
+  }
+};
 
 export const deleteUser = async (req: any, resp: Response) => { 
     try {
