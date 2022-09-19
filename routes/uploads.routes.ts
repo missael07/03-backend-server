@@ -12,7 +12,7 @@ const uploadRoutes = Router();
 // default options
 uploadRoutes.use(fileUpload());
 
-uploadRoutes.put('/:by/:id', validateJWT, fileUploadServer);
+uploadRoutes.put("/:id", validateJWT, fileUploadServer);
 
 uploadRoutes.get('/:by/:data', getImage)
 

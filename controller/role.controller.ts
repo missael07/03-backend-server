@@ -45,14 +45,7 @@ export const updateRole = async (req: any, resp: Response) => {
         msg: "Exists",
       });
 
-    if (!userDB.google) {
-      fields.email = email;
-    } else if (userDB.email !== email) {
-      return resp.status(400).json({
-        ok: false,
-        msg: "google",
-      });
-    }
+
 
     const updatedUser = await User.findByIdAndUpdate(uid, fields, {
       new: true,

@@ -8,34 +8,28 @@ import { Hospital } from "../models/hospital.model";
 import { User } from "../models/user.model";
 
 export const fileUploadServer = async (req: any, resp: Response) => {
-    const { id, by } = req.params;
-    const validTypes = ['users', 'hospitals', 'doctors'];
-    if (!validTypes.includes(by)) {
-        return resp.status(400).json({
-            ok: false,
-            msg:'No es un valor asginable'
-        })
-    };
+    const { id } = req.params;
 
     if (!req.files || Object.keys(req.files).length === 0) {
-    return resp.status(400).send({ok: false, msg: 'Load'});
+      return resp.status(400).send({ ok: false, msg: "Load" });
     }
     const file = req.files.img;
-    const name = file.name.split('.');
-    const ext = name[name.length - 1]
+    const name = file.name.split(".");
+    const ext = name[name.length - 1];
 
-    const validExtensions = ['png', 'jpg', 'jpeg'];
-    if(!validExtensions.includes(ext)) return resp.status(400).json({ ok: false, msg:'Extension' })
+    const validExtensions = ["png", "jpg", "jpeg"];
+    if (!validExtensions.includes(ext))
+      return resp.status(400).json({ ok: false, msg: "Extension" });
 
     const fileName = `${uuidv4()}.${ext}`;
 
-    const path = `./uploads/${by}/${fileName}`;
+    const path = `./uploads/users/${fileName}`;
 
     file.mv(path, (err: any) => {
-        if (err) resp.status(500).json({ ok: false, msg: 'LoadFile' });
-        updateImg(by, id, fileName);
-        file.mv(`./dist/uploads/${by}/${fileName}`);
-        resp.status(200).json({ ok: true, msg: 'Success', fileName });
+      if (err) resp.status(500).json({ ok: false, msg: "LoadFile" });
+      updateImg("users", id, fileName);
+      file.mv(`./dist/uploads/users/${fileName}`);
+      resp.status(200).json({ ok: true, msg: "Success", fileName });
     });
 }
 

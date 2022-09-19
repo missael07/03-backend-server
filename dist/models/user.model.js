@@ -21,7 +21,7 @@ const UserSchema = new mongoose_1.Schema({
     email: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     password: {
         type: String,
@@ -33,16 +33,20 @@ const UserSchema = new mongoose_1.Schema({
     role: {
         type: String,
         required: true,
-        default: 'USER_ROLE'
-    },
-    google: {
-        type: Boolean,
-        default: false,
+        default: "USER_ROLE",
     },
     isActive: {
         type: Boolean,
-        default: true
-    }
+        default: true,
+    },
+    bDate: {
+        type: Date,
+        required: true,
+    },
+    gender: {
+        type: String,
+        required: true,
+    },
 });
 UserSchema.method('toJSON', function () {
     const _a = this.toObject(), { __v, _id, password } = _a, object = __rest(_a, ["__v", "_id", "password"]);

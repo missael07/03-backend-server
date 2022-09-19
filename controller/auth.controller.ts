@@ -33,46 +33,46 @@ export const login = async (req: any, resp: Response) => {
     }
 }
 
-export const loginGoogle = async (req: any, resp: Response) => {
-    try {
+// export const loginGoogle = async (req: any, resp: Response) => {
+//     try {
         
-        const token = req.body.token
-        const { email, name, picture } = await googleVerify(token);
+//         const token = req.body.token
+//         const { email, name, picture } = await googleVerify(token);
         
-        const userDB = await User.findOne({ email });
-        let user;
+//         const userDB = await User.findOne({ email });
+//         let user;
 
-        if (!userDB) {
-            user = new User({
-                email,
-                name,
-                img: picture,
-                password: '@@@',
-                google: true
-            })
-        } else {
-            user = userDB;
-            user.google = true;
-            user.img = picture;
-        }
-        await user.save();
+//         if (!userDB) {
+//             user = new User({
+//                 email,
+//                 name,
+//                 img: picture,
+//                 password: '@@@',
+//                 google: true
+//             })
+//         } else {
+//             user = userDB;
+//             user.google = true;
+//             user.img = picture;
+//         }
+//         await user.save();
 
-        const tokenUser = await genJWT(user.id, user.email);
+//         const tokenUser = await genJWT(user.id, user.email);
 
 
-        resp.status(200).json({
-            ok: true,
-            tokenUser
-        })
-    }
-    catch (error) {
-        console.log(error);
-        resp.status(400).json({
-            ok: false,
-            msg: 'Token'
-        })
-    }
-}
+//         resp.status(200).json({
+//             ok: true,
+//             tokenUser
+//         })
+//     }
+//     catch (error) {
+//         console.log(error);
+//         resp.status(400).json({
+//             ok: false,
+//             msg: 'Token'
+//         })
+//     }
+// }
 
 
 export const renewToken = async (req: any, resp: Response) => {

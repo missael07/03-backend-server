@@ -67,6 +67,7 @@ export const createUser = async (req: any, resp: Response) => {
     resp.status(500).json({
       ok: false,
       msg: "Admin",
+      err: err,
     });
   }
 };
@@ -78,22 +79,13 @@ export const updateUser = async (req: any, resp: Response) => {
 
     if (!userDB) return resp.status(404).json({ ok: false, msg: "Found" });
 
-    const { password, google, email, ...fields } = req.body;
+    const { password, email, ...fields } = req.body;
     const emailExists = await User.findOne({ email });
     if (userDB.email !== email && emailExists)
       return resp.status(400).json({
         ok: false,
         msg: "Exists",
       });
-
-    if (!userDB.google) {
-      fields.email = email;
-    } else if (userDB.email !== email) {
-      return resp.status(400).json({
-        ok: false,
-        msg: "google",
-      });
-    }
 
     const updatedUser = await User.findByIdAndUpdate(uid, fields, {
       new: true,

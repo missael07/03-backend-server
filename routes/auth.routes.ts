@@ -3,7 +3,7 @@
 */
 import { Router } from "express";
 import { check } from "express-validator";
-import { login, loginGoogle, renewToken } from '../controller/auth.controller';
+import { login, renewToken } from '../controller/auth.controller';
 import { validateJWT } from "../middleware/validate-jwt.middleware";
 import { validateFields } from '../middleware/validations';
 
@@ -17,10 +17,7 @@ authRoutes.post('/', [
     
 ], login);
 
-authRoutes.post('/google', [
-    check('token', 'Token google obligatorio').not().isEmpty(),
-    validateFields,    
-], loginGoogle);
+// fix/917DisplaynAdd a closefeature/10
 
 authRoutes.get('/renew', validateJWT, renewToken);
 

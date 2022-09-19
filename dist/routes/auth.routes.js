@@ -14,9 +14,6 @@ authRoutes.post('/', [
     express_validator_1.check('password', 'El password es obligatorio').not().isEmpty(),
     validations_1.validateFields,
 ], auth_controller_1.login);
-authRoutes.post('/google', [
-    express_validator_1.check('token', 'Token google obligatorio').not().isEmpty(),
-    validations_1.validateFields,
-], auth_controller_1.loginGoogle);
+// fix/917DisplaynAdd a closefeature/10
 authRoutes.get('/renew', validate_jwt_middleware_1.validateJWT, auth_controller_1.renewToken);
 exports.default = authRoutes;

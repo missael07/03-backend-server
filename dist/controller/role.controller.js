@@ -62,15 +62,6 @@ const updateRole = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
                 ok: false,
                 msg: "Exists",
             });
-        if (!userDB.google) {
-            fields.email = email;
-        }
-        else if (userDB.email !== email) {
-            return resp.status(400).json({
-                ok: false,
-                msg: "google",
-            });
-        }
         const updatedUser = yield user_model_1.User.findByIdAndUpdate(uid, fields, {
             new: true,
         });

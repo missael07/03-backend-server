@@ -8,15 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.renewToken = exports.loginGoogle = exports.login = void 0;
+exports.renewToken = exports.login = void 0;
 const bcryptjs_1 = require("bcryptjs");
 const user_model_1 = require("../models/user.model");
 const jwt_1 = require("../helpers/jwt");
-const google_verify_1 = __importDefault(require("../helpers/google-verify"));
 const login = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
@@ -42,42 +38,40 @@ const login = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
-const loginGoogle = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const token = req.body.token;
-        const { email, name, picture } = yield google_verify_1.default(token);
-        const userDB = yield user_model_1.User.findOne({ email });
-        let user;
-        if (!userDB) {
-            user = new user_model_1.User({
-                email,
-                name,
-                img: picture,
-                password: '@@@',
-                google: true
-            });
-        }
-        else {
-            user = userDB;
-            user.google = true;
-            user.img = picture;
-        }
-        yield user.save();
-        const tokenUser = yield jwt_1.genJWT(user.id, user.email);
-        resp.status(200).json({
-            ok: true,
-            tokenUser
-        });
-    }
-    catch (error) {
-        console.log(error);
-        resp.status(400).json({
-            ok: false,
-            msg: 'Token'
-        });
-    }
-});
-exports.loginGoogle = loginGoogle;
+// export const loginGoogle = async (req: any, resp: Response) => {
+//     try {
+//         const token = req.body.token
+//         const { email, name, picture } = await googleVerify(token);
+//         const userDB = await User.findOne({ email });
+//         let user;
+//         if (!userDB) {
+//             user = new User({
+//                 email,
+//                 name,
+//                 img: picture,
+//                 password: '@@@',
+//                 google: true
+//             })
+//         } else {
+//             user = userDB;
+//             user.google = true;
+//             user.img = picture;
+//         }
+//         await user.save();
+//         const tokenUser = await genJWT(user.id, user.email);
+//         resp.status(200).json({
+//             ok: true,
+//             tokenUser
+//         })
+//     }
+//     catch (error) {
+//         console.log(error);
+//         resp.status(400).json({
+//             ok: false,
+//             msg: 'Token'
+//         })
+//     }
+// }
 const renewToken = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     const { uid, email } = req;
     try {

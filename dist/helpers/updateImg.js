@@ -11,8 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateImg = void 0;
 const fs_1 = require("fs");
-const doctor_model_1 = require("../models/doctor.model");
-const hospital_model_1 = require("../models/hospital.model");
 const user_model_1 = require("../models/user.model");
 const removeImg = (oldPath) => {
     if (fs_1.existsSync(oldPath))
@@ -21,7 +19,7 @@ const removeImg = (oldPath) => {
 const updateImg = (by, id, name) => __awaiter(void 0, void 0, void 0, function* () {
     let oldPath = `./uploads/${by}`;
     switch (by) {
-        case 'users':
+        case "users":
             const user = yield user_model_1.User.findById(id);
             if (!user)
                 return false;
@@ -30,24 +28,22 @@ const updateImg = (by, id, name) => __awaiter(void 0, void 0, void 0, function* 
             user.img = name;
             yield user.save();
             return true;
-        case 'hospitals':
-            const hospitals = yield hospital_model_1.Hospital.findById(id);
-            if (!hospitals)
-                return false;
-            oldPath = `${oldPath}/${hospitals.img}`;
-            yield removeImg(oldPath);
-            hospitals.img = name;
-            yield hospitals.save();
-            return true;
-        case 'doctors':
-            const doctor = yield doctor_model_1.Doctor.findById(id);
-            if (!doctor)
-                return false;
-            oldPath = `${oldPath}/${doctor.img}`;
-            yield removeImg(oldPath);
-            doctor.img = name;
-            yield doctor.save();
-            return true;
+        // case 'hospitals':
+        //     const hospitals = await Hospital.findById(id);
+        //     if (!hospitals) return false;
+        //     oldPath = `${oldPath}/${hospitals.img}`;
+        //     await removeImg(oldPath);
+        //     hospitals.img = name;
+        //     await hospitals.save();
+        //     return true;
+        // case 'doctors':
+        //     const doctor = await Doctor.findById(id);
+        //     if (!doctor) return false;
+        //     oldPath = `${oldPath}/${doctor.img}`;
+        //     await removeImg(oldPath);
+        //     doctor.img = name;
+        //     await doctor.save();
+        //     return true;
     }
 });
 exports.updateImg = updateImg;

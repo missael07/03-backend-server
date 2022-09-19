@@ -18,32 +18,24 @@ const path_1 = __importDefault(require("path"));
 const uuid_1 = require("uuid");
 const updateImg_1 = require("../helpers/updateImg");
 const fileUploadServer = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id, by } = req.params;
-    const validTypes = ['users', 'hospitals', 'doctors'];
-    if (!validTypes.includes(by)) {
-        return resp.status(400).json({
-            ok: false,
-            msg: 'No es un valor asginable'
-        });
-    }
-    ;
+    const { id } = req.params;
     if (!req.files || Object.keys(req.files).length === 0) {
-        return resp.status(400).send({ ok: false, msg: 'Load' });
+        return resp.status(400).send({ ok: false, msg: "Load" });
     }
     const file = req.files.img;
-    const name = file.name.split('.');
+    const name = file.name.split(".");
     const ext = name[name.length - 1];
-    const validExtensions = ['png', 'jpg', 'jpeg'];
+    const validExtensions = ["png", "jpg", "jpeg"];
     if (!validExtensions.includes(ext))
-        return resp.status(400).json({ ok: false, msg: 'Extension' });
+        return resp.status(400).json({ ok: false, msg: "Extension" });
     const fileName = `${uuid_1.v4()}.${ext}`;
-    const path = `./uploads/${by}/${fileName}`;
+    const path = `./uploads/users/${fileName}`;
     file.mv(path, (err) => {
         if (err)
-            resp.status(500).json({ ok: false, msg: 'LoadFile' });
-        updateImg_1.updateImg(by, id, fileName);
-        file.mv(`./dist/uploads/${by}/${fileName}`);
-        resp.status(200).json({ ok: true, msg: 'Success', fileName });
+            resp.status(500).json({ ok: false, msg: "LoadFile" });
+        updateImg_1.updateImg("users", id, fileName);
+        file.mv(`./dist/uploads/users/${fileName}`);
+        resp.status(200).json({ ok: true, msg: "Success", fileName });
     });
 });
 exports.fileUploadServer = fileUploadServer;

@@ -13,6 +13,6 @@ const upload_contraller_1 = require("../controller/upload.contraller");
 const uploadRoutes = express_1.Router();
 // default options
 uploadRoutes.use(express_fileupload_1.default());
-uploadRoutes.put('/:by/:id', validate_jwt_middleware_1.validateJWT, upload_contraller_1.fileUploadServer);
+uploadRoutes.put("/:id", validate_jwt_middleware_1.validateJWT, upload_contraller_1.fileUploadServer);
 uploadRoutes.get('/:by/:data', upload_contraller_1.getImage);
 exports.default = uploadRoutes;
