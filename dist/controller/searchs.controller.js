@@ -17,7 +17,7 @@ const search = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.params.data;
     const regex = new RegExp(data, "i");
     const [users, hospitals, doctors] = yield Promise.all([
-        user_model_1.User.find({ name: regex }, "name email img role google uid"),
+        user_model_1.User.find({ name: regex }, "name email img role uid"),
         hospital_model_1.Hospital.find({ name: regex }, "name img "),
         doctor_model_1.Doctor.find({ name: regex }, "name img "),
     ]);
@@ -36,7 +36,7 @@ const searchBy = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     let results = [];
     switch (collection) {
         case "users":
-            results = yield user_model_1.User.find({ name: regex }, "name email img role google uid");
+            results = yield user_model_1.User.find({ name: regex }, "name email img role uid");
             break;
         case "hospitals":
             results = yield hospital_model_1.Hospital.find({ name: regex }, "name img ").populate("createdBy", "name");

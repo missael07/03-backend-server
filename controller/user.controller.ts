@@ -4,21 +4,19 @@ import { genSaltSync, hashSync } from "bcryptjs";
 import { genJWT } from "../helpers/jwt";
 
 export const getUsers = async (req: any, resp: Response) => {
-    const from = Number(req.query.from) || 0;
+  const from = Number(req.query.from) || 0;
 
-    const [users, total] = await Promise.all([
-        User.find({}, 'name email role google isActive img')
-            .skip(from).limit(5),
-        User.countDocuments()
-    ]);
+  const [users, total] = await Promise.all([
+    User.find({}, "name email role isActive img startDate").skip(from).limit(5),
+    User.countDocuments(),
+  ]);
 
-
-    resp.json({
-        ok: true,
-        users,
-        total,
-    })
-}
+  resp.json({
+    ok: true,
+    users,
+    total,
+  });
+};
 export const impersonateUser = async (req: any, resp: Response) => {
   const { email, uid } = req.query;
   const token = await genJWT(uid, email);
@@ -110,20 +108,45 @@ export const updateUser = async (req: any, resp: Response) => {
   }
 };
 
-export const deleteUser = async (req: any, resp: Response) => { 
-    try {
-        const uid = req.params.id;
-        const userDB = await User.findById(uid);
+export const deleteUser = async (req: any, resp: Response) => {
+  try {
+    const uid = req.params.id;
+    const userDB = await User.findById(uid);
 
-        if (!userDB) return resp.status(404).json({ ok: false, msg: 'Found' });
-        
-        await User.findByIdAndDelete(uid);
-        resp.json({ ok: true, msg: 'SuccessDeleted'})
-        
-    } catch (error) {
-        resp.status(500).json({
-            ok: false,
-            msg: 'Admin'
-        })
+    if (!userDB) return resp.status(404).json({ ok: false, msg: "Found" });
+
+    await User.findByIdAndDelete(uid);
+    resp.json({ ok: true, msg: "SuccessDeleted" });
+  } catch (error) {
+    resp.status(500).json({
+      ok: false,
+      msg: "Admin",
+    });
+  }
+};
+
+export const changePassword = async (req: any, resp: Response) => {
+  const uid = req.uid;
+  console.log(uid);
+  const userDB = await User.findById(uid);
+
+  if (!userDB) return resp.status(404).json({ ok: false, msg: "Found" });
+
+  const { password } = req.body;
+
+  const salt = genSaltSync();
+  const newPassword = hashSync(password, salt);
+
+  const updatedUser = await User.findByIdAndUpdate(
+    uid,
+    { password: newPassword, firstLogin: false },
+    {
+      new: true,
     }
-}
+  );
+
+  resp.json({
+    ok: true,
+    user: updatedUser,
+  });
+};

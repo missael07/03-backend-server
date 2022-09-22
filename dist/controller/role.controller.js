@@ -55,7 +55,7 @@ const updateRole = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
         const userDB = yield user_model_1.User.findById(uid);
         if (!userDB)
             return resp.status(404).json({ ok: false, msg: "Found" });
-        const _a = req.body, { password, google, email } = _a, fields = __rest(_a, ["password", "google", "email"]);
+        const _a = req.body, { password, email } = _a, fields = __rest(_a, ["password", "email"]);
         const emailExists = yield user_model_1.User.findOne({ email });
         if (userDB.email !== email && emailExists)
             return resp.status(400).json({

@@ -11,54 +11,65 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.User = void 0;
+exports.Request = void 0;
 const mongoose_1 = require("mongoose");
-const UserSchema = new mongoose_1.Schema({
-    name: {
-        type: String,
+const RequestSchema = new mongoose_1.Schema({
+    requester: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "User",
         required: true,
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    img: {
-        type: String,
-    },
-    role: {
-        type: String,
-        required: true,
-        default: "USER_ROLE",
-    },
-    isActive: {
-        type: Boolean,
-        default: true,
-    },
-    bDate: {
+    requestDate: {
         type: Date,
-        required: true,
-    },
-    gender: {
-        type: String,
         required: true,
     },
     startDate: {
-        type: Date,
+        type: String,
         required: true,
     },
-    firstLogin: {
+    endDate: {
+        type: String,
+        required: true,
+    },
+    reason: {
+        type: String,
+        required: true,
+    },
+    type: {
+        type: String,
+    },
+    approved: {
+        type: String,
+        default: "En espera",
+    },
+    comments: {
+        type: String,
+        required: true,
+    },
+    responsabilityAcepted: {
         type: Boolean,
-        default: true,
+        required: true,
+    },
+    requestType: {
+        type: String,
+        required: true,
+    },
+    commingDate: {
+        type: String,
+        required: true,
+    },
+    requestTime: {
+        type: String,
+        required: true,
+    },
+    hours: {
+        type: String,
+        required: true,
     },
 });
-UserSchema.method('toJSON', function () {
-    const _a = this.toObject(), { __v, _id, password } = _a, object = __rest(_a, ["__v", "_id", "password"]);
+RequestSchema.method("toJSON", function () {
+    const _a = this.toObject(), { __v, _id } = _a, object = __rest(_a, ["__v", "_id"]);
     object.uid = _id;
     return object;
 });
-exports.User = mongoose_1.model('User', UserSchema);
+exports.Request = mongoose_1.model("Request", RequestSchema);

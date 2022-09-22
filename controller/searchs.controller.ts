@@ -8,7 +8,7 @@ export const search = async (req: any, resp: Response) => {
   const regex = new RegExp(data, "i");
 
   const [users, hospitals, doctors] = await Promise.all([
-    User.find({ name: regex }, "name email img role google uid"),
+    User.find({ name: regex }, "name email img role uid"),
     Hospital.find({ name: regex }, "name img "),
     Doctor.find({ name: regex }, "name img "),
   ]);
@@ -29,10 +29,7 @@ export const searchBy = async (req: any, resp: Response) => {
   let results = [];
   switch (collection) {
     case "users":
-      results = await User.find(
-        { name: regex },
-        "name email img role google uid"
-      );
+      results = await User.find({ name: regex }, "name email img role uid");
       break;
     case "hospitals":
       results = await Hospital.find({ name: regex }, "name img ").populate(

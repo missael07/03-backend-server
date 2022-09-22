@@ -3,7 +3,7 @@ import { compareSync, genSaltSync, hashSync } from "bcryptjs";
 
 import { User } from '../models/user.model';
 import { genJWT } from "../helpers/jwt";
-import googleVerify from "../helpers/google-verify";
+// import googleVerify from "../helpers/google-verify";
 
 export const login = async (req: any, resp: Response) => {
     try {
@@ -21,9 +21,10 @@ export const login = async (req: any, resp: Response) => {
         const token = await genJWT(userDB.id, userDB.email);
 
         resp.status(200).json({
-            ok: true,
-            token
-        })
+          ok: true,
+          token,
+          user: userDB,
+        });
     }
     catch (error) {
         resp.status(500).json({

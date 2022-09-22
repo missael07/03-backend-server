@@ -34,6 +34,14 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  firstLogin: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 UserSchema.method('toJSON', function () {

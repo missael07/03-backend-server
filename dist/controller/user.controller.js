@@ -20,16 +20,15 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUser = exports.createUser = exports.getUser = exports.impersonateUser = exports.getUsers = void 0;
+exports.changePassword = exports.deleteUser = exports.updateUser = exports.createUser = exports.getUser = exports.impersonateUser = exports.getUsers = void 0;
 const user_model_1 = require("../models/user.model");
 const bcryptjs_1 = require("bcryptjs");
 const jwt_1 = require("../helpers/jwt");
 const getUsers = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     const from = Number(req.query.from) || 0;
     const [users, total] = yield Promise.all([
-        user_model_1.User.find({}, 'name email role google isActive img')
-            .skip(from).limit(5),
-        user_model_1.User.countDocuments()
+        user_model_1.User.find({}, "name email role isActive img startDate").skip(from).limit(5),
+        user_model_1.User.countDocuments(),
     ]);
     resp.json({
         ok: true,
@@ -129,15 +128,33 @@ const deleteUser = (req, resp) => __awaiter(void 0, void 0, void 0, function* ()
         const uid = req.params.id;
         const userDB = yield user_model_1.User.findById(uid);
         if (!userDB)
-            return resp.status(404).json({ ok: false, msg: 'Found' });
+            return resp.status(404).json({ ok: false, msg: "Found" });
         yield user_model_1.User.findByIdAndDelete(uid);
-        resp.json({ ok: true, msg: 'SuccessDeleted' });
+        resp.json({ ok: true, msg: "SuccessDeleted" });
     }
     catch (error) {
         resp.status(500).json({
             ok: false,
-            msg: 'Admin'
+            msg: "Admin",
         });
     }
 });
 exports.deleteUser = deleteUser;
+const changePassword = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
+    const uid = req.uid;
+    console.log(uid);
+    const userDB = yield user_model_1.User.findById(uid);
+    if (!userDB)
+        return resp.status(404).json({ ok: false, msg: "Found" });
+    const { password } = req.body;
+    const salt = bcryptjs_1.genSaltSync();
+    const newPassword = bcryptjs_1.hashSync(password, salt);
+    const updatedUser = yield user_model_1.User.findByIdAndUpdate(uid, { password: newPassword, firstLogin: false }, {
+        new: true,
+    });
+    resp.json({
+        ok: true,
+        user: updatedUser,
+    });
+});
+exports.changePassword = changePassword;

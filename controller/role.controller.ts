@@ -37,7 +37,7 @@ export const updateRole = async (req: any, resp: Response) => {
 
     if (!userDB) return resp.status(404).json({ ok: false, msg: "Found" });
 
-    const { password, google, email, ...fields } = req.body;
+    const { password, email, ...fields } = req.body;
     const emailExists = await User.findOne({ email });
     if (userDB.email !== email && emailExists)
       return resp.status(400).json({

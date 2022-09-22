@@ -13,6 +13,7 @@ exports.renewToken = exports.login = void 0;
 const bcryptjs_1 = require("bcryptjs");
 const user_model_1 = require("../models/user.model");
 const jwt_1 = require("../helpers/jwt");
+// import googleVerify from "../helpers/google-verify";
 const login = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
@@ -27,7 +28,8 @@ const login = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
         const token = yield jwt_1.genJWT(userDB.id, userDB.email);
         resp.status(200).json({
             ok: true,
-            token
+            token,
+            user: userDB,
         });
     }
     catch (error) {

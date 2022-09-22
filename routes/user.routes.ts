@@ -13,6 +13,7 @@ import {
 } from "../controller/user.controller";
 import { validateJWT } from "../middleware/validate-jwt.middleware";
 import { validateFields } from "../middleware/validations";
+import { changePassword } from "../controller/user.controller";
 
 const userRoutes = Router();
 
@@ -43,7 +44,9 @@ userRoutes.put(
   updateUser
 );
 
-userRoutes.delete('/:id',validateJWT, deleteUser);
+userRoutes.delete("/:id", validateJWT, deleteUser);
+userRoutes.post("/change-password", validateJWT, changePassword);
+
 
 
 export default userRoutes;
